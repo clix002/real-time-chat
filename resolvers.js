@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 export const resolvers = {
   Query: {
     users: async (_, a_, { token }) => {
-      console.log(token);
       if (!token) {
         throw new ForbiddenError("You are not authenticated ");
       }
