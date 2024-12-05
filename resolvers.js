@@ -1,12 +1,29 @@
 import { PrismaClient } from "@prisma/client";
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError, ForbiddenError } from "apollo-server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
 export const resolvers = {
-  Query: {},
+  Query: {
+    users: async (_, a_, { token }) => {
+      console.log(token);
+      if (!token) {
+        throw new ForbiddenError("You are not authenticated ");
+      }
+      return await prisma.user.findMany({
+        where: {
+          id: {
+            not: token.id,
+          },
+        },
+        orderBy: {
+          createedAt: "desc",
+        },
+      });
+    },
+  },
   Mutation: {
     signupUser: async (_, { userNew }) => {
       const user = await prisma.user.findUnique({
@@ -54,7 +71,7 @@ export const resolvers = {
         process.env.JWT_SECRET
       );
 
-        return { token };
+      return { token };
     },
   },
 };
