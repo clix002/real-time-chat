@@ -23,15 +23,26 @@ export const typeDefs = gql`
     token: String!
   }
 
+  scalar Date
+
+  type Message {
+    id: ID!
+    text: String!
+    senderId: Int!
+    receiverId: Int!
+    createdAt: Date!
+  }
+
   type Mutation {
     signupUser(userNew: UserInput): User
     signinUser(userSignin: UserSignin): Token
+    createMessage(text: String, receiverId: Int): Message
   }
 
   type User {
     id: ID
-    firstName: String
-    lastName: String
-    email: String
+    firstName: String!
+    lastName: String!
+    email: String!
   }
 `;

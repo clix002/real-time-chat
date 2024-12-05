@@ -72,5 +72,20 @@ export const resolvers = {
 
       return { token };
     },
+    createMessage: async (_, { text, receiverId }, { token }) => {
+      if (!token) {
+        throw new ForbiddenError("You are not authenticated ");
+      }
+
+      const message = await prisma.message.create({
+        data: {
+          text,
+          senderId: token.id,
+          receiverId,
+        },
+      });
+
+      return message;
+    },
   },
 };
