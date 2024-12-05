@@ -22,6 +22,28 @@ export const resolvers = {
         },
       });
     },
+    messageByUser: async (_, { receiverId }, { token }) => {
+      if (!token) {
+        throw new ForbiddenError("You are not authenticated ");
+      }
+      return await prisma.message.findMany({
+        where: {
+          OR: [
+            {
+              senderId: token.id,
+              receiverId,
+            },
+            {
+              senderId: receiverId,
+              receiverId: token.id,
+            },
+          ],
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+    },
   },
   Mutation: {
     signupUser: async (_, { userNew }) => {
