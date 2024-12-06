@@ -1,4 +1,4 @@
-import { gql } from "apollo-server";
+import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
@@ -45,5 +45,9 @@ export const typeDefs = gql`
     firstName: String!
     lastName: String!
     email: String!
+  }
+
+  type Subscription  {
+    messageCreated: Message!
   }
 `;
