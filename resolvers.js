@@ -7,9 +7,9 @@ const prisma = new PrismaClient();
 
 export const resolvers = {
   Query: {
-    users: async (_, a_, { token }) => {
+    users: async (_, __, { token }) => {
       if (!token) {
-        throw new ForbiddenError("You are not authenticated ");
+        throw new ForbiddenError("You are not authenticated");
       }
       return await prisma.user.findMany({
         where: {
@@ -18,13 +18,16 @@ export const resolvers = {
           },
         },
         orderBy: {
-          createedAt: "desc",
+          createdAt: "desc",
         },
       });
     },
     messageByUser: async (_, { receiverId }, { token }) => {
       if (!token) {
-        throw new ForbiddenError("You are not authenticated ");
+        throw new ForbiddenError("You are not authenticated");
+      }
+      if (!receiverId) {
+        throw new Error("receiverId is required");
       }
       return await prisma.message.findMany({
         where: {
@@ -55,12 +58,12 @@ export const resolvers = {
       if (user) {
         throw new AuthenticationError("User already exists with this email");
       }
-      const hashedPassowrd = await bcrypt.hash(userNew.password, 10);
+      const hashedPassword = await bcrypt.hash(userNew.password, 10);
 
       const newUser = await prisma.user.create({
         data: {
           ...userNew,
-          password: hashedPassowrd,
+          password: hashedPassword,
         },
       });
 
@@ -96,7 +99,7 @@ export const resolvers = {
     },
     createMessage: async (_, { text, receiverId }, { token }) => {
       if (!token) {
-        throw new ForbiddenError("You are not authenticated ");
+        throw new ForbiddenError("You are not authenticated");
       }
 
       const message = await prisma.message.create({
