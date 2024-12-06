@@ -2,10 +2,8 @@
 
 Aquí hay un video que explica cómo usar el proyecto:
 
-<video width="320" height="240" controls>
-  <source src="https://res.cloudinary.com/dbyahumwd/video/upload/v1733512374/fdaxt6awxmq3292wjjbw.mp4" type="video/mp4">
-  Tu navegador no soporta el elemento de video.
-</video>
+https://github.com/user-attachments/assets/02014513-4086-4027-9980-49cfbfe9b8ce
+
 
 ## link si no aparece en video en .md
 
